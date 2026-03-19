@@ -1,0 +1,12 @@
+{
+  "id": "demo_001",
+  "description": "Engine 3 and Ladder 7 responded to a reported residential structure fire at 14 Maple Street at approximately 0200 hours. On arrival, crews observed smoke and flames from the second-floor windows of a two-story wood-frame dwelling. Two occupants were located on the second floor and rescued via ground ladder. One adult female was treated on scene for smoke inhalation by EMS. Fire was brought under control within 30 minutes. Cause determined to be unattended cooking on the stove. Estimated property damage of $45,000.",
+  "expected_fields": {
+    "incident_type": "structure_fire",
+    "address": "14 Maple Street",
+    "occupants_rescued": 2,
+    "area_of_origin": "Kitchen",
+    "cause_of_ignition": "Unattended cooking"
+  },
+  "notes": "Classic residential structure fire with rescue and identified cause."
+}

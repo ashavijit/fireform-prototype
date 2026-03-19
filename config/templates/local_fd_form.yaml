@@ -1,0 +1,49 @@
+# ── FireForm Template: Generic Local FD Incident Report ───────────────────────
+# This template demonstrates how any department can add their own form.
+# Replace pdf_path with your department's actual PDF form.
+
+template_id:   local_fd_form
+template_name: "Local Fire Department Incident Report"
+pdf_path:      "config/pdfs/local_fd_form.pdf"
+
+field_mappings:
+
+  - pdf_field: "RunNumber"
+    source:    "incident_number"
+
+  - pdf_field: "DateOfIncident"
+    source:    "date_time"
+    transform: "date_format:%Y-%m-%d"
+
+  - pdf_field: "TimeOfIncident"
+    source:    "date_time"
+    transform: "date_format:%H:%M"
+
+  - pdf_field: "LocationAddress"
+    source:    "address"
+
+  - pdf_field: "LocationCity"
+    source:    "city"
+
+  - pdf_field: "IncidentDescription"
+    source:    "incident_type"
+
+  - pdf_field: "OccupantsRescued"
+    source:    "occupants_rescued"
+    transform: "to_string"
+
+  - pdf_field: "InjuriesReported"
+    source:    "casualties.civilian_injuries"
+    transform: "to_string"
+
+  - pdf_field: "FatalitiesReported"
+    source:    "casualties.civilian_fatalities"
+    transform: "to_string"
+
+  - pdf_field: "NarrativeSummary"
+    source:    "narrative"
+    transform: "max_chars:1000"
+
+  - pdf_field: "EstimatedLoss"
+    source:    "estimated_loss_usd"
+    transform: "to_string"

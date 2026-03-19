@@ -1,0 +1,11 @@
+{
+  "id": "demo_005",
+  "description": "Engine 2 responded to 220 Commerce Boulevard, Springfield for an automatic fire alarm activation at a commercial office building. On arrival, no smoke, fire, or odor detected. Building maintenance identified a faulty duct detector in HVAC unit on the third floor. Alarm silenced, building returned to normal operations. No occupants displaced.",
+  "expected_fields": {
+    "incident_type": "false_alarm",
+    "address": "220 Commerce Boulevard",
+    "city": "Springfield",
+    "occupants_rescued": 0
+  },
+  "notes": "False alarm from faulty detector. Tests non-fire pathway."
+}

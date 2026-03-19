@@ -1,0 +1,11 @@
+{
+  "id": "demo_003",
+  "description": "Hazmat Team 1 dispatched to Industrial Park, Unit 7 at Riverdale following reports of a chemical odor. On arrival, a 55-gallon drum of toluene was found to have a failing seal, resulting in a slow leak onto the concrete floor. Approximately 8 gallons released. Area evacuated, drum uprighted and overpacked. No injuries. Fire Marshal notified.",
+  "expected_fields": {
+    "incident_type": "hazmat",
+    "address": "Industrial Park, Unit 7",
+    "city": "Riverdale",
+    "occupants_rescued": 0
+  },
+  "notes": "Hazmat with chemical identification and no casualties."
+}

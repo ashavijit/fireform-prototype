@@ -1,0 +1,124 @@
+# ── FireForm Template: NFIRS Basic Module ─────────────────────────────────────
+# National Fire Incident Reporting System — Basic Incident Report
+# U.S. Fire Administration / FEMA
+#
+# Place the blank NFIRS Basic Module PDF at the path below.
+# Download from: https://www.usfa.fema.gov/nfirs/
+
+template_id:   nfirs_basic
+template_name: "NFIRS Basic Module"
+pdf_path:      "config/pdfs/nfirs_basic.pdf"
+
+# Each mapping connects an IncidentReport field to a PDF AcroForm field.
+# Transforms are applied to the value before writing.
+field_mappings:
+
+  # ── Incident identification ────────────────────────────────────────────────
+  - pdf_field: "IncidentNumber"
+    source:    "incident_number"
+
+  - pdf_field: "IncidentDate"
+    source:    "date_time"
+    transform: "date_format:%m/%d/%Y"
+
+  - pdf_field: "IncidentTime"
+    source:    "date_time"
+    transform: "date_format:%H%M"
+
+  # ── Location ───────────────────────────────────────────────────────────────
+  - pdf_field: "StreetAddress"
+    source:    "address"
+
+  - pdf_field: "City"
+    source:    "city"
+
+  - pdf_field: "State"
+    source:    "state"
+    transform: "upper"
+
+  - pdf_field: "ZipCode"
+    source:    "zip_code"
+
+  # ── Incident type (NFIRS numeric code) ────────────────────────────────────
+  - pdf_field: "IncidentTypeCode"
+    source:    "incident_type"
+    transform: "enum_map"
+    enum_map:
+      structure_fire:  "111"
+      vehicle_fire:    "131"
+      wildland_fire:   "140"
+      medical:         "300"
+      hazmat:          "400"
+      rescue:          "200"
+      false_alarm:     "700"
+      service_call:    "500"
+      other:           "900"
+
+  # ── Property ──────────────────────────────────────────────────────────────
+  - pdf_field: "PropertyUse"
+    source:    "property_use"
+    transform: "enum_map"
+    enum_map:
+      residential_1family: "419"
+      residential_multi:   "429"
+      commercial:          "500"
+      industrial:          "600"
+      educational:         "140"
+      healthcare:          "300"
+      storage:             "700"
+      vehicle:             "900"
+      outdoor:             "900"
+      other:               "999"
+
+  - pdf_field: "AlarmSource"
+    source:    "alarm_source"
+    transform: "enum_map"
+    enum_map:
+      automatic_detector: "1"
+      manual_pull:        "2"
+      phone_911:          "3"
+      passerby:           "4"
+      crew_observed:      "5"
+      other:              "UU"
+
+  # ── Casualties ────────────────────────────────────────────────────────────
+  - pdf_field: "CivilianInjuries"
+    source:    "casualties.civilian_injuries"
+    transform: "to_string"
+
+  - pdf_field: "CivilianFatalities"
+    source:    "casualties.civilian_fatalities"
+    transform: "to_string"
+
+  - pdf_field: "FireServiceInjuries"
+    source:    "casualties.responder_injuries"
+    transform: "to_string"
+
+  - pdf_field: "FireServiceFatalities"
+    source:    "casualties.responder_fatalities"
+    transform: "to_string"
+
+  - pdf_field: "PersonsRescued"
+    source:    "occupants_rescued"
+    transform: "to_string"
+
+  # ── Financial ─────────────────────────────────────────────────────────────
+  - pdf_field: "EstimatedPropertyLoss"
+    source:    "estimated_loss_usd"
+    transform: "to_string"
+
+  # ── Area of origin and cause ───────────────────────────────────────────────
+  - pdf_field: "AreaOfOrigin"
+    source:    "area_of_origin"
+
+  - pdf_field: "CauseOfIgnition"
+    source:    "cause_of_ignition"
+
+  - pdf_field: "ContributingFactors"
+    source:    "contributing_factors"
+    transform: "concat:; "
+
+  # ── Narrative ─────────────────────────────────────────────────────────────
+  - pdf_field: "Narrative"
+    source:    "narrative"
+    transform: "max_chars:2000"

@@ -1,0 +1,9 @@
+{
+  "id": "demo_004",
+  "description": "Engine 5 responded to I-90 westbound mile marker 42 for a fully involved vehicle fire. Single occupant had self-extricated prior to arrival. Vehicle was a 2019 Ford F-150. Fire extinguished using approximately 150 gallons. No injuries. Traffic control established with state police assistance. Vehicle total loss.",
+  "expected_fields": {
+    "incident_type": "vehicle_fire",
+    "occupants_rescued": 0
+  },
+  "notes": "Vehicle fire on highway. Occupant self-extricated — rescued count is 0."
+}

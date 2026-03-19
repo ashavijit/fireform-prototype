@@ -1,0 +1,10 @@
+{
+  "id": "demo_002",
+  "description": "Medic 12 responded to 55 Oak Avenue for an unresponsive adult male. On arrival, patient was found in cardiac arrest. CPR was initiated immediately. AED applied, two shocks delivered. ROSC achieved after 8 minutes. Patient transported to Springfield General in critical condition.",
+  "expected_fields": {
+    "incident_type": "medical",
+    "address": "55 Oak Avenue",
+    "occupants_rescued": 1
+  },
+  "notes": "Cardiac arrest with ROSC. Tests medical pathway."
+}
