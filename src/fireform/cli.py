@@ -1,13 +1,16 @@
 from __future__ import annotations
+
 import json
 import sys
 from pathlib import Path
+
 import click
+from rich import print as rprint
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
-from rich import print as rprint
+
 from . import __version__
 from .config import FireFormConfig
 from .extractor import LLMExtractor
@@ -15,6 +18,7 @@ from .ingestion import IncidentInput
 from .pdf_filler import PDFFiller
 from .schema import IncidentReport
 from .validation import ReportValidator
+
 console = Console()
 err_console = Console(stderr=True, style='red')
 

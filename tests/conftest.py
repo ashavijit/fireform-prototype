@@ -1,7 +1,9 @@
-import json
 from pathlib import Path
+
 import pytest
+
 from fireform.schema import CasualtyRecord, IncidentReport, IncidentType
+
 
 @pytest.fixture
 def sample_structure_fire() -> IncidentReport:

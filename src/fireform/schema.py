@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+
 from pydantic import BaseModel, Field, model_validator
+
 
 class IncidentType(str, Enum):
     STRUCTURE_FIRE = 'structure_fire'
@@ -56,23 +58,23 @@ class IncidentReport(BaseModel):
     incident_type: IncidentType
     address: str = Field(min_length=3)
     narrative: str = Field(min_length=10)
-    incident_number: Optional[str] = None
-    date_time: Optional[datetime] = None
-    city: Optional[str] = None
-    state: Optional[str] = None
-    zip_code: Optional[str] = None
-    property_use: Optional[PropertyUse] = None
-    alarm_source: Optional[AlarmSource] = None
+    incident_number: str | None = None
+    date_time: datetime | None = None
+    city: str | None = None
+    state: str | None = None
+    zip_code: str | None = None
+    property_use: PropertyUse | None = None
+    alarm_source: AlarmSource | None = None
     occupants_rescued: int = Field(default=0, ge=0)
-    area_of_origin: Optional[str] = None
-    cause_of_ignition: Optional[str] = None
+    area_of_origin: str | None = None
+    cause_of_ignition: str | None = None
     contributing_factors: list[str] = Field(default_factory=list)
-    estimated_loss_usd: Optional[float] = Field(default=None, ge=0)
-    casualties: Optional[CasualtyRecord] = None
+    estimated_loss_usd: float | None = Field(default=None, ge=0)
+    casualties: CasualtyRecord | None = None
     resources: list[ResourceRecord] = Field(default_factory=list)
 
     @model_validator(mode='after')
-    def check_casualty_vs_rescued(self) -> 'IncidentReport':
+    def check_casualty_vs_rescued(self) -> IncidentReport:
         if self.casualties and self.occupants_rescued:
             total_cas = self.casualties.total_casualties
             if total_cas > self.occupants_rescued + 10:

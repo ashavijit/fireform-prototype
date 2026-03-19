@@ -1,11 +1,15 @@
 from __future__ import annotations
+
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
+
 import fitz
 import yaml
+
 from .schema import IncidentReport
+
 logger = logging.getLogger(__name__)
 
 class PDFFiller:
@@ -57,11 +61,11 @@ class PDFFiller:
         doc.close()
         return names
 
-    def _find_mapping(self, pdf_field_name: str) -> Optional[dict]:
+    def _find_mapping(self, pdf_field_name: str) -> dict | None:
         return next((m for m in self.field_mappings if m.get('pdf_field') == pdf_field_name), None)
 
     @staticmethod
-    def _get_value(report: IncidentReport, source: str) -> Optional[Any]:
+    def _get_value(report: IncidentReport, source: str) -> Any | None:
         parts = source.split('.')
         obj: Any = report
         for part in parts:
@@ -93,7 +97,7 @@ class PDFFiller:
         if transform.startswith('concat:'):
             sep = transform.split(':', 1)[1]
             if isinstance(value, list):
-                return sep.join((str(v) for v in value))
+                return sep.join(str(v) for v in value)
             return str(value)
         if transform == 'bool_yn':
             return 'Yes' if value else 'No'

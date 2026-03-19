@@ -1,8 +1,11 @@
 import json
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import MagicMock, patch
+
 import pytest
+
 from fireform.extractor import LLMExtractor
 from fireform.schema import IncidentReport, IncidentType
+
 STRUCTURE_FIRE_RESPONSE = json.dumps({'incident_type': 'structure_fire', 'address': '14 Maple Street', 'city': 'Springfield', 'narrative': 'Residential structure fire. Two occupants rescued from second floor.', 'occupants_rescued': 2, 'casualties': {'civilian_injuries': 1, 'civilian_fatalities': 0, 'responder_injuries': 0, 'responder_fatalities': 0, 'treated_on_scene': True}})
 MEDICAL_RESPONSE = json.dumps({'incident_type': 'medical', 'address': '55 Oak Avenue', 'narrative': 'Cardiac arrest. CPR administered. Patient transported.', 'occupants_rescued': 1})
 
@@ -60,9 +63,8 @@ def test_retries_on_validation_error(extractor):
 
 def test_raises_after_all_retries_exhausted(extractor):
     mock = MagicMock(**{'return_value.json.return_value': {'response': 'bad json'}, 'return_value.raise_for_status.return_value': None})
-    with patch('httpx.post', mock):
-        with pytest.raises(RuntimeError, match='extraction failed'):
-            extractor.extract('Test incident.')
+    with patch('httpx.post', mock), pytest.raises(RuntimeError, match='extraction failed'):
+        extractor.extract('Test incident.')
     assert mock.call_count == 3
 
 def test_correction_prompt_contains_error(extractor):

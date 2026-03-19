@@ -1,14 +1,16 @@
 from __future__ import annotations
+
 import logging
 from dataclasses import dataclass, field
-from typing import Optional
+
 from .schema import IncidentReport, IncidentType
+
 logger = logging.getLogger(__name__)
 
 @dataclass
 class ValidationResult:
     is_valid: bool
-    report: Optional[IncidentReport] = None
+    report: IncidentReport | None = None
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     completeness_score: float = 0.0
@@ -45,7 +47,7 @@ class ReportValidator:
             warnings.append('Property use is recommended for structure/vehicle fires (NFIRS field).')
         if report.occupants_rescued > 2 and (not report.resources):
             warnings.append('Multiple occupants rescued but no resources listed — consider adding responding units.')
-        scored = sum((1 for f in _SCORED_FIELDS if _is_populated(getattr(report, f, None))))
+        scored = sum(1 for f in _SCORED_FIELDS if _is_populated(getattr(report, f, None)))
         score = scored / len(_SCORED_FIELDS)
         if score < 0.4:
             warnings.append(f'Report completeness is low ({score:.0%}). Consider adding more details for a stronger record.')

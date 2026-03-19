@@ -1,7 +1,9 @@
-import pytest
-from pathlib import Path
 from unittest.mock import MagicMock, patch
+
+import pytest
+
 from fireform.ingestion import IncidentInput
+
 
 @pytest.fixture
 def ingestion():

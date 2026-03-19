@@ -1,20 +1,22 @@
 from __future__ import annotations
+
 import argparse
 import json
 import sys
 import time
 from pathlib import Path
 from unittest.mock import MagicMock, patch
+
 sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 from fireform.extractor import LLMExtractor
 from fireform.ingestion import IncidentInput
-from fireform.schema import IncidentReport
 from fireform.validation import ReportValidator
+
 try:
+    from rich import print as rprint
     from rich.console import Console
     from rich.panel import Panel
     from rich.table import Table
-    from rich import print as rprint
     console = Console()
     USE_RICH = True
 except ImportError:
@@ -62,7 +64,7 @@ def run_case(case_file: Path, live: bool) -> dict:
     for w in result.warnings:
         _print(f'    ⚠  {w}')
     if failed:
-        _print(f'\n  Field check failures:')
+        _print('\n  Field check failures:')
         for field, exp, got in failed:
             _print(f'    ✗  {field}: expected={exp!r}, got={got!r}')
     else:
@@ -82,7 +84,7 @@ def main() -> None:
     args = parser.parse_args()
     mode = 'LIVE (Ollama)' if args.live else 'MOCK (offline)'
     _print(f"\n{'═' * 60}")
-    _print(f'  FireForm Prototype — Pipeline Demo')
+    _print('  FireForm Prototype — Pipeline Demo')
     _print(f'  Mode: {mode}')
     _print(f"{'═' * 60}")
     case_files = sorted(CASES_DIR.glob('*.json'))
@@ -100,10 +102,10 @@ def main() -> None:
             _print(f'\n  ERROR in {cf.name}: {exc}')
             results.append({'case_id': cf.stem, 'valid': False, 'error': str(exc)})
     _print(f"\n{'═' * 60}")
-    _print(f"  Summary: {sum((r.get('valid', False) for r in results))}/{len(results)} cases valid")
-    avg_score = sum((r.get('completeness', 0) for r in results)) / len(results)
+    _print(f"  Summary: {sum(r.get('valid', False) for r in results)}/{len(results)} cases valid")
+    avg_score = sum(r.get('completeness', 0) for r in results) / len(results)
     _print(f'  Average completeness score: {avg_score:.0%}')
-    avg_time = sum((r.get('elapsed', 0) for r in results)) / len(results)
+    avg_time = sum(r.get('elapsed', 0) for r in results) / len(results)
     _print(f'  Average extraction time:   {avg_time:.1f}s')
     _print(f"{'═' * 60}\n")
 if __name__ == '__main__':

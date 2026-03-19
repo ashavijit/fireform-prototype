@@ -1,6 +1,8 @@
 import pytest
 from pydantic import ValidationError
+
 from fireform.schema import CasualtyRecord, IncidentReport, IncidentType
+
 
 def test_minimal_valid_report():
     r = IncidentReport(incident_type='structure_fire', address='14 Maple Street', narrative='Residential structure fire. Two occupants rescued.')

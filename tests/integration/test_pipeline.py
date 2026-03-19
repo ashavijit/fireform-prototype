@@ -1,13 +1,15 @@
 from __future__ import annotations
+
 import json
-from datetime import datetime
-from pathlib import Path
 from unittest.mock import MagicMock, patch
+
 import pytest
+
 from fireform.extractor import LLMExtractor
 from fireform.ingestion import IncidentInput
 from fireform.schema import IncidentReport
 from fireform.validation import ReportValidator
+
 STRUCTURE_FIRE_JSON = json.dumps({'incident_type': 'structure_fire', 'address': '14 Maple Street', 'city': 'Springfield', 'state': 'IL', 'narrative': 'Residential structure fire. Two occupants rescued from second floor.', 'occupants_rescued': 2, 'property_use': 'residential_1family', 'alarm_source': 'phone_911', 'casualties': {'civilian_injuries': 1, 'civilian_fatalities': 0, 'responder_injuries': 0, 'responder_fatalities': 0, 'treated_on_scene': True}, 'area_of_origin': 'Kitchen', 'cause_of_ignition': 'Unattended cooking', 'contributing_factors': ['unattended stove'], 'estimated_loss_usd': 45000})
 MEDICAL_JSON = json.dumps({'incident_type': 'medical', 'address': '55 Oak Avenue', 'city': 'Springfield', 'narrative': 'Cardiac arrest on scene. CPR administered. Patient transported to hospital.', 'occupants_rescued': 1, 'casualties': {'civilian_injuries': 1, 'civilian_fatalities': 0, 'responder_injuries': 0, 'responder_fatalities': 0, 'treated_on_scene': False}})
 HAZMAT_JSON = json.dumps({'incident_type': 'hazmat', 'address': 'Industrial Park, Unit 7', 'city': 'Riverdale', 'narrative': 'Chemical spill at industrial storage facility. Area evacuated.', 'property_use': 'industrial', 'occupants_rescued': 0, 'contributing_factors': ['improper storage', 'container failure']})
@@ -66,7 +68,7 @@ class TestVoiceToValidation:
         transcribed = 'Called to 14 Maple Street at 0200 hours. Residential structure fire on the second floor.'
         mock_whisper = MagicMock()
         mock_whisper.transcribe.return_value = {'text': transcribed}
-        ingestion = IngestionWithMockedWhisper = IncidentInput.__new__(IncidentInput)
+        IngestionWithMockedWhisper = IncidentInput.__new__(IncidentInput)
         IngestionWithMockedWhisper._whisper_model_name = 'base'
         IngestionWithMockedWhisper._whisper = mock_whisper
         with patch('httpx.post', _mock_ollama(STRUCTURE_FIRE_JSON)):
@@ -88,9 +90,8 @@ class TestRetryInPipeline:
 
     def test_pipeline_raises_after_all_retries(self):
         bad = MagicMock(**{'return_value.json.return_value': {'response': 'not json'}, 'return_value.raise_for_status.return_value': None})
-        with patch('httpx.post', bad):
-            with pytest.raises(RuntimeError):
-                LLMExtractor(max_retries=1).extract('Test incident.')
+        with patch('httpx.post', bad), pytest.raises(RuntimeError):
+            LLMExtractor(max_retries=1).extract('Test incident.')
 
 class TestJsonRoundTrip:
 

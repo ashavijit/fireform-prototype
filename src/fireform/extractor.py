@@ -1,12 +1,15 @@
 from __future__ import annotations
+
 import json
 import logging
 import re
 import time
-from typing import Optional
+
 import httpx
 from pydantic import ValidationError
+
 from .schema import IncidentReport
+
 logger = logging.getLogger(__name__)
 _SYSTEM_PROMPT = 'You are a structured data extractor for fire department incident reports.\n\nGiven a free-form incident description, extract all available information\nand return it as a single valid JSON object that matches this exact schema:\n\n{schema}\n\nStrict rules:\n1. Return ONLY valid JSON. No preamble, no explanation, no markdown code fences.\n2. If a field cannot be determined from the text, omit it or use null.\n3. For incident_type, choose the closest matching enum value from the schema.\n4. For date_time, use ISO 8601 format: YYYY-MM-DDTHH:MM:SS\n5. The narrative field must be a concise factual summary (not a copy of the input).\n6. Do not invent information that is not present or implied by the description.\n'
 _CORRECTION_PROMPT = 'Your previous response caused this error:\n{error}\n\nOriginal incident description:\n{description}\n\nPlease provide a corrected JSON response that strictly matches the schema.\nReturn ONLY the JSON object, no other text.\n'
@@ -23,7 +26,7 @@ class LLMExtractor:
     def extract(self, description: str) -> IncidentReport:
         system = _SYSTEM_PROMPT.format(schema=self._schema_str)
         prompt = description
-        last_err: Optional[Exception] = None
+        last_err: Exception | None = None
         for attempt in range(self.max_retries + 1):
             t0 = time.perf_counter()
             try:

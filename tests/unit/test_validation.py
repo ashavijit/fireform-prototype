@@ -1,6 +1,8 @@
 import pytest
-from fireform.schema import CasualtyRecord, IncidentReport, IncidentType
+
+from fireform.schema import CasualtyRecord, IncidentReport
 from fireform.validation import ReportValidator
+
 
 @pytest.fixture
 def validator():
@@ -33,30 +35,30 @@ def test_missing_address_produces_error(validator):
     r.__dict__['address'] = ''
     result = validator.validate(r)
     assert not result.is_valid
-    assert any(('address' in e for e in result.errors))
+    assert any('address' in e for e in result.errors)
 
 def test_missing_narrative_produces_error(validator):
     r = _make_report()
     r.__dict__['narrative'] = ''
     result = validator.validate(r)
     assert not result.is_valid
-    assert any(('narrative' in e for e in result.errors))
+    assert any('narrative' in e for e in result.errors)
 
 def test_casualty_exceeds_rescued_produces_warning(validator):
     r = _make_report(occupants_rescued=1, casualties=CasualtyRecord(civilian_injuries=10, civilian_fatalities=5))
     result = validator.validate(r)
     assert result.is_valid
-    assert any(('casualty' in w.lower() or 'exceed' in w.lower() for w in result.warnings))
+    assert any('casualty' in w.lower() or 'exceed' in w.lower() for w in result.warnings)
 
 def test_financial_loss_on_medical_call_produces_warning(validator):
     r = _make_report(incident_type='medical', estimated_loss_usd=50000)
     result = validator.validate(r)
-    assert any(('estimated_loss' in w or 'loss' in w.lower() for w in result.warnings))
+    assert any('estimated_loss' in w or 'loss' in w.lower() for w in result.warnings)
 
 def test_structure_fire_without_property_use_warns(validator):
     r = _make_report(incident_type='structure_fire', property_use=None)
     result = validator.validate(r)
-    assert any(('property use' in w.lower() for w in result.warnings))
+    assert any('property use' in w.lower() for w in result.warnings)
 
 def test_result_str_valid(validator):
     r = _make_report()

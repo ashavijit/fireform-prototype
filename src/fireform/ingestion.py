@@ -1,7 +1,8 @@
 from __future__ import annotations
+
 import logging
 from pathlib import Path
-from typing import Union
+
 logger = logging.getLogger(__name__)
 AUDIO_EXTENSIONS = {'.wav', '.mp3', '.m4a', '.ogg', '.flac', '.webm'}
 
@@ -11,7 +12,7 @@ class IncidentInput:
         self._whisper_model_name = whisper_model
         self._whisper = None
 
-    def ingest(self, source: Union[str, Path]) -> str:
+    def ingest(self, source: str | Path) -> str:
         path = Path(source) if isinstance(source, str) and Path(source).exists() else source if isinstance(source, Path) else None
         if path is not None:
             if path.suffix.lower() in AUDIO_EXTENSIONS:
@@ -27,13 +28,13 @@ class IncidentInput:
         logger.debug('Ingested %d-character text input.', len(cleaned))
         return cleaned
 
-    def from_text_file(self, path: Union[str, Path]) -> str:
+    def from_text_file(self, path: str | Path) -> str:
         path = Path(path)
         if not path.exists():
             raise FileNotFoundError(f'Text file not found: {path}')
         return self.from_text(path.read_text(encoding='utf-8'))
 
-    def from_audio(self, audio_path: Union[str, Path]) -> str:
+    def from_audio(self, audio_path: str | Path) -> str:
         audio_path = Path(audio_path)
         if not audio_path.exists():
             raise FileNotFoundError(f'Audio file not found: {audio_path}')
