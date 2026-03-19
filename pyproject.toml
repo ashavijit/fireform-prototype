@@ -48,7 +48,6 @@ Repository = "https://github.com/ashavijit/fireform-prototype"
 [tool.setuptools.packages.find]
 where = ["src"]
 
-# ── Ruff linting ──────────────────────────────────────────────────────────────
 [tool.ruff]
 line-length = 100
 target-version = "py310"
@@ -57,13 +56,11 @@ target-version = "py310"
 select = ["E", "F", "I", "UP", "B", "SIM"]
 ignore = ["E501"]
 
-# ── Pytest ────────────────────────────────────────────────────────────────────
 [tool.pytest.ini_options]
 testpaths   = ["tests"]
 asyncio_mode = "auto"
 addopts     = "-v --tb=short"
 
-# ── Coverage ──────────────────────────────────────────────────────────────────
 [tool.coverage.run]
 source = ["src/fireform"]
 omit   = ["*/tests/*"]
@@ -72,13 +69,11 @@ omit   = ["*/tests/*"]
 show_missing = true
 fail_under   = 80
 
-# ── Mypy ──────────────────────────────────────────────────────────────────────
 [tool.mypy]
 python_version = "3.10"
 strict         = true
 ignore_missing_imports = true
 
-# ── FireForm config ───────────────────────────────────────────────────────────
 [tool.fireform]
 default_model     = "llama3"
 ollama_url        = "http://localhost:11434"
