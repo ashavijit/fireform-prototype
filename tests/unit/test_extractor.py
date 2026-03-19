@@ -83,9 +83,8 @@ def test_correction_prompt_contains_error(extractor):
 
 def test_raises_on_ollama_connection_error(extractor):
     import httpx as _httpx
-    with patch('httpx.post', side_effect=_httpx.ConnectError('refused')):
-        with pytest.raises(RuntimeError, match='Cannot connect to Ollama'):
-            extractor.extract('Test incident.')
+    with patch('httpx.post', side_effect=_httpx.ConnectError('refused')), pytest.raises(RuntimeError, match='Cannot connect to Ollama'):
+        extractor.extract('Test incident.')
 
 def test_schema_embedded_in_system_prompt(extractor):
     captured_system = []

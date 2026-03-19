@@ -70,7 +70,5 @@ def test_whisper_import_error_gives_clear_message(ingestion, tmp_path):
     audio.write_bytes(b'fake')
     with patch('builtins.__import__', side_effect=ImportError('no module')):
         pass
-    with patch.object(ingestion, '_whisper', None):
-        with patch('fireform.ingestion.IncidentInput._load_whisper', side_effect=ImportError('Whisper is required')):
-            with pytest.raises(ImportError, match='Whisper'):
-                ingestion.from_audio(audio)
+    with patch.object(ingestion, '_whisper', None), patch('fireform.ingestion.IncidentInput._load_whisper', side_effect=ImportError('Whisper is required')), pytest.raises(ImportError, match='Whisper'):
+        ingestion.from_audio(audio)

@@ -146,15 +146,14 @@ def doctor() -> None:
         console.print(f'  [red]✗[/red] Cannot reach Ollama at {cfg.ollama_url}')
         console.print('    Start it with: ollama serve')
         ok = False
-    try:
-        import whisper
+    import importlib.util
+    if importlib.util.find_spec('whisper') is not None:
         console.print('  [green]✓[/green] openai-whisper installed')
-    except ImportError:
+    else:
         console.print('  [yellow]⚠[/yellow] openai-whisper not installed (needed for voice input)')
-    try:
-        import fitz
+    if importlib.util.find_spec('fitz') is not None:
         console.print('  [green]✓[/green] PyMuPDF (fitz) installed')
-    except ImportError:
+    else:
         console.print('  [red]✗[/red] PyMuPDF not installed: pip install PyMuPDF')
         ok = False
     tpl_dir = Path(cfg.templates_dir)
