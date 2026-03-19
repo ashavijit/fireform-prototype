@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 This is a working prototype of the [FireForm](https://github.com/juanalvv/FireForm) pipeline,
-built as part of my Google Summer of Code 2025 proposal.
+built as part of my Google Summer of Code 2026 proposal.
 
 FireForm converts a single voice memo or text description into filled agency-specific PDF forms —
 running entirely on-device, with no data leaving the organisation's network.
@@ -180,7 +180,7 @@ make typecheck
 
 ## About this prototype
 
-Built by **Avijit Sen** as part of a GSoC 2025 proposal for the
+Built by **Avijit Sen** as part of a GSoC 2026 proposal for the
 [FireForm](https://github.com/juanalvv/FireForm) project.
 
 - GitHub: [github.com/ashavijit](https://github.com/ashavijit)
